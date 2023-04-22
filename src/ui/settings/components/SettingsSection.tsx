@@ -12,7 +12,7 @@ export default function SettingsSection() {
     return (
         <ErrorBoundary>
             {/* I commented out all of the icons here to match Discord's UI */}
-            <FormSection key="Vendetta" title={`Vendetta${settings.safeMode?.enabled ? " (Safe Mode)" : ""}`}>
+            <FormSection key="Vendetta" title={`Onetwosixetta${settings.safeMode?.enabled ? " (Safe Mode)" : ""}`}>
                 <FormRow
                     label="General"
                     // leading={<FormRow.Icon source={getAssetIDByName("settings")} />}
