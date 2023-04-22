@@ -1,11 +1,10 @@
 import { VendettaObject } from "@types";
 import patcher from "@lib/patcher";
 import logger from "@lib/logger";
-import settings, { loaderConfig } from "@lib/settings";
+import settings from "@lib/settings";
 import * as constants from "@lib/constants";
 import * as debug from "@lib/debug";
 import * as plugins from "@lib/plugins";
-import * as themes from "@lib/themes";
 import * as commands from "@lib/commands";
 import * as storage from "@lib/storage";
 import * as metro from "@metro/filters";
@@ -31,13 +30,11 @@ export default async (unloads: any[]): Promise<VendettaObject> => ({
         ...color,
     },
     plugins: utils.without(plugins, "initPlugins", "evalPlugin"),
-    themes: utils.without(themes, "initThemes"),
     commands: utils.without(commands, "patchCommands"),
     storage,
     settings,
     loader: {
         identity: window.__vendetta_loader,
-        config: loaderConfig,
     },
     logger,
     version: debug.versionHash,

@@ -1,5 +1,3 @@
-import { initThemes } from "@lib/themes";
-
 // Hoist required modules
 // This used to be in filters.ts, but things became convoluted
 
@@ -14,12 +12,3 @@ export const ReactNative = basicFind("AppRegistry") as typeof import("react-nati
 
 // Export chroma.js
 export const chroma = basicFind("brewer") as typeof import("chroma-js");
-
-// Themes
-if (window.__vendetta_loader?.features.themes) {
-    try {
-        initThemes();
-    } catch (e) {
-        console.error("[Vendetta] Failed to initialize themes...", e);
-    }
-}

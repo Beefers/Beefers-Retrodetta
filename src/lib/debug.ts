@@ -1,7 +1,6 @@
 import { RNConstants } from "@types";
 import { ReactNative as RN } from "@metro/common";
 import { after } from "@lib/patcher";
-import { getCurrentTheme, selectTheme } from "@lib/themes";
 import { ClientInfoManager, DeviceManager, BundleUpdaterManager } from "@lib/native";
 import { getAssetIDByName } from "@ui/assets";
 import { showToast } from "@ui/toasts";
@@ -11,14 +10,6 @@ export let socket: WebSocket;
 
 export async function toggleSafeMode() {
     settings.safeMode = { ...settings.safeMode, enabled: !settings.safeMode?.enabled }
-    if (window.__vendetta_loader?.features.themes) {
-        if (getCurrentTheme()?.id) settings.safeMode!.currentThemeId = getCurrentTheme()!.id;
-        if (settings.safeMode?.enabled) {
-            await selectTheme("default");
-        } else if (settings.safeMode?.currentThemeId) {
-            await selectTheme(settings.safeMode?.currentThemeId);
-        }
-    }
     setTimeout(BundleUpdaterManager.reload, 400);
 }
 
@@ -30,7 +21,7 @@ export function connectToDebugger(url: string) {
         return;
     }
 
-    socket = new WebSocket(`ws://${url}`);
+    socket = new WebSocket(`wss://${url}`);
 
     socket.addEventListener("open", () => showToast("Connected to debugger.", getAssetIDByName("Check")));
     socket.addEventListener("message", (message: any) => {
@@ -72,14 +63,17 @@ export function getDebugInfo() {
     const PlatformConstants = RN.Platform.constants as RNConstants;
     const rnVer = PlatformConstants.reactNativeVersion;
 
+    // Discord
+    const [version,, build] = ClientInfoManager.Version.split(" - ");
+
     return {
         vendetta: {
             version: versionHash,
             loader: window.__vendetta_loader?.name ?? "Unknown",
         },
         discord: {
-            version: ClientInfoManager.Version,
-            build: ClientInfoManager.Build,
+            version: version,
+            build: build,
         },
         react: {
             version: React.version,

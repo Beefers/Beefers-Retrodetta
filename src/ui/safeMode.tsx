@@ -1,5 +1,5 @@
 import { ButtonColors } from "@types";
-import { ReactNative as RN, stylesheet } from "@metro/common";
+import { ReactNative as RN, constants, stylesheet } from "@metro/common";
 import { findByName, findByProps, findByStoreName } from "@metro/filters";
 import { after } from "@lib/patcher";
 import { toggleSafeMode } from "@lib/debug";
@@ -11,9 +11,9 @@ import settings from "@lib/settings";
 const ErrorBoundary = findByName("ErrorBoundary");
 
 // Let's just pray they have this.
-const { BadgableTabBar } = findByProps("BadgableTabBar");
+// const { BadgableTabBar } = findByProps("BadgableTabBar");
 
-const ThemeStore = findByStoreName("ThemeStore");
+const UserSettingsStore = findByStoreName("UserSettingsStore");
 
 const { TextStyleSheet } = findByProps("TextStyleSheet");
 const styles = stylesheet.createThemedStyleSheet({
@@ -30,7 +30,8 @@ const styles = stylesheet.createThemedStyleSheet({
         marginVertical: 8,
     },
     headerTitle: {
-        ...TextStyleSheet["heading-md/semibold"],
+        // TODO: This is the wrong font, but I don't care enough to fix it right now, and most of Discord's uses of this font are broken too
+        ...TextStyleSheet["text-md/semibold"],
         textAlign: "center",
         textTransform: "uppercase",
         color: semanticColors.HEADER_PRIMARY,
@@ -86,20 +87,26 @@ export default () => after("render", ErrorBoundary.prototype, function (this: an
         <_ErrorBoundary>
             <SafeAreaView style={styles.container}>
                 <RN.View style={styles.header}>
-                    <RN.Image style={{ flex: 1, resizeMode: "contain", maxHeight: 96, paddingRight: 4 }} source={ThemeStore.theme === "light" ? ret.props.lightSource : ret.props.darkSource} />
+                    <RN.Image style={{ flex: 1, resizeMode: "contain", maxHeight: 96, paddingRight: 4 }} source={UserSettingsStore.theme === "light" ? ret.props.lightSource : ret.props.darkSource} />
                     <RN.View style={{ flex: 2, paddingLeft: 4 }}>
                         <RN.Text style={styles.headerTitle}>{ret.props.title}</RN.Text>
                         <RN.Text style={styles.headerDescription}>{ret.props.body}</RN.Text>
                     </RN.View>
                 </RN.View>
                 <RN.View style={{ flex: 6 }}>
-                    <RN.View style={{ paddingBottom: 8 }}>
+                    <RN.View style={{ paddingBottom: 8, flexDirection: "row" }}>
                         {/* Are errors caught by ErrorBoundary guaranteed to have the component stack? */}
-                        <BadgableTabBar
-                            tabs={tabs}
-                            activeTab={this.state.activeTab}
-                            onTabSelected={(tab: string) => { this.setState({ activeTab: tab }) }}
-                        />
+                        {tabs.map(tab => {
+                            const tabIndex = tabs.indexOf(tab) !== 0 ? 8 : 0;
+
+                            return <Button
+                                text={tab.title}
+                                size="small"
+                                color={this.state.activeTab === tab.id ? ButtonColors.BRAND : ButtonColors.GREY}
+                                onPress={() => { this.setState({ activeTab: tab.id }) }}
+                                style={{ flex: parseFloat(`0.${tabs.length}`), marginLeft: tabIndex }}
+                            />
+                        })}
                     </RN.View>
                     <Codeblock
                         selectable

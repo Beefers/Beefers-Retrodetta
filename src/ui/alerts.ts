@@ -23,8 +23,6 @@ export function showConfirmationAlert(options: ConfirmationAlertOptions) {
     return Alerts.show(internalOptions);
 };
 
-export const showCustomAlert = (component: React.ComponentType, props: any) => Alerts.openLazy({
-    importer: async () => () => React.createElement(component, props),
-});
+export const showCustomAlert = (component: React.ComponentType, props: any) => Alerts.open(() => React.createElement(component, props));
 
 export const showInputAlert = (options: InputAlertProps) => showCustomAlert(InputAlert as React.ComponentType, options);

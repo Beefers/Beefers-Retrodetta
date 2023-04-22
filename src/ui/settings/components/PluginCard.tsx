@@ -69,7 +69,7 @@ export default function PluginCard({ item: plugin, index }: CardWrapper<Plugin>)
                     }
                 },
                 {
-                    icon: "ic_duplicate",
+                    icon: "ic_message_copy",
                     label: "Clear data",
                     isDestructive: true,
                     onPress: () => showConfirmationAlert({

@@ -119,36 +119,11 @@ interface Plugin {
     js: string;
 }
 
-interface ThemeData {
-    name: string;
-    description?: string;
-    authors?: Author[];
-    spec: number;
-    semanticColors?: Record<string, (string | false)[]>;
-    rawColors?: Record<string, string>;
-    background?: {
-        url: string;
-        blur?: number;
-        /**
-         * The alpha value of the background.
-         * `CHAT_BACKGROUND` of semanticColors alpha value will be ignored when this is specified 
-        */
-        alpha?: number;
-    }
-}
-
-interface Theme {
-    id: string;
-    selected: boolean;
-    data: ThemeData;
-}
-
 interface Settings {
     debuggerUrl: string;
     developerSettings: boolean;
     safeMode?: {
         enabled: boolean;
-        currentThemeId?: string;
     };
 }
 
@@ -264,43 +239,6 @@ interface MMKVManager {
     clear: () => void;
 }
 
-interface FileManager {
-    /**
-     * @param path **Full** path to file
-     */
-    fileExists: (path: string) => Promise<boolean>;
-    /**
-     * Allowed URI schemes on Android: `file://`, `content://` ([See here](https://developer.android.com/reference/android/content/ContentResolver#accepts-the-following-uri-schemes:_3))
-     */
-    getSize: (uri: string) => Promise<boolean>;
-    /**
-     * @param path **Full** path to file
-     * @param encoding Set to `base64` in order to encode response
-     */
-    readFile(path: string, encoding: "base64" | "utf8"): Promise<string>;
-    saveFileToGallery?(uri: string, fileName: string, fileType: "PNG" | "JPEG"): Promise<string>;
-    /**
-     * Beware! This function has differing functionality on iOS and Android.
-     * @param storageDir Either `cache` or `documents`.
-     * @param path Path in `storageDir`, parents are recursively created.
-     * @param data The data to write to the file
-     * @param encoding Set to `base64` if `data` is base64 encoded.
-     * @returns Promise that resolves to path of the file once it got written
-     */
-    writeFile(storageDir: "cache" | "documents", path: string, data: string, encoding: "base64" | "utf8"): Promise<string>;
-    getConstants: () => {
-        /**
-         * The path the `documents` storage dir (see {@link writeFile}) represents.
-         */
-        DocumentsDirPath: string;
-    };
-    /**
-     * Will apparently cease to exist some time in the future so please use {@link getConstants} instead.
-     * @deprecated
-     */
-    DocumentsDirPath: string;
-}
-
 type EmitterEvent = "SET" | "GET" | "DEL";
 
 interface EmitterListenerData {
@@ -328,14 +266,6 @@ interface StorageBackend {
     set: (data: unknown) => void | Promise<void>;
 }
 
-interface LoaderConfig {
-    customLoadUrl: {
-        enabled: boolean;
-        url: string;
-    };
-    loadReactDevTools: boolean;
-}
-
 interface LoaderIdentity {
     name: string;
     features: {
@@ -343,9 +273,6 @@ interface LoaderIdentity {
         devtools?: {
             prop: string;
             version: string;
-        },
-        themes?: {
-            prop: string;
         }
     }
 }
@@ -402,7 +329,6 @@ interface VendettaObject {
         DISCORD_SERVER: string;
         DISCORD_SERVER_ID: string;
         PLUGINS_CHANNEL_ID: string;
-        THEMES_CHANNEL_ID: string;
         GITHUB: string;
         PROXY_PREFIX: string;
         HTTP_REGEX: RegExp;
@@ -463,15 +389,6 @@ interface VendettaObject {
         removePlugin: (id: string) => void;
         getSettings: (id: string) => JSX.Element;
     };
-    themes: {
-        themes: Record<string, Theme>;
-        fetchTheme: (id: string, selected?: boolean) => Promise<void>;
-        installTheme: (id: string) => Promise<void>;
-        selectTheme: (id: string) => Promise<void>;
-        removeTheme: (id: string) => Promise<boolean>;
-        getCurrentTheme: () => Theme | null;
-        updateThemes: () => Promise<void>;
-    };
     commands: {
         registerCommand: (command: ApplicationCommand) => () => void;
     };
@@ -482,12 +399,10 @@ interface VendettaObject {
         wrapSync: <T extends Promise<any>>(store: T) => Awaited<T>;
         awaitSyncWrapper: (store: any) => Promise<void>;
         createMMKVBackend: (store: string) => StorageBackend;
-        createFileBackend: (file: string) => StorageBackend;
     };
     settings: Settings;
     loader: {
         identity?: LoaderIdentity;
-        config: LoaderConfig;
     };
     logger: Logger;
     version: string;

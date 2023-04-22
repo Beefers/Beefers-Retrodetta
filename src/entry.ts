@@ -7,7 +7,7 @@ import(".").then((m) => m.default()).catch((e) => {
     console.log(e?.stack ?? e.toString());
     alert([
         "Failed to load Vendetta!\n",
-        `Build Number: ${ClientInfoManager.Build}`,
+        `Build Number: ${ClientInfoManager.Version.split(" - ")[2]}`,
         // @ts-expect-error, replaced in build script
         `Vendetta: ${__vendettaVersion}`,
         e?.stack || e.toString(),

@@ -6,7 +6,7 @@ export const constants = findByProps("API_HOST");
 export const channels = findByProps("getVoiceChannelId");
 export const i18n = findByProps("Messages");
 export const url = findByProps("openURL", "openDeeplink");
-export const toasts = find(m => m.open && m.close && !m.startDrag && !m.init && !m.openReplay && !m.setAlwaysOnTop);
+export const toasts = find(m => m.open && m.close && !m.openLazy && !m.startDrag && !m.init && !m.openReplay && !m.setAlwaysOnTop);
 export const stylesheet = findByProps("createThemedStyleSheet") as DiscordStyleSheet;
 export const clipboard = findByProps("setString", "getString", "hasString") as typeof import("@react-native-clipboard/clipboard").default;
 export const assets = findByProps("registerAsset");

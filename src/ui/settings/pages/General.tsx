@@ -18,7 +18,7 @@ export default function General() {
         {
             label: "Vendetta",
             version: debugInfo.vendetta.version,
-            icon: "ic_progress_wrench_24px",
+            icon: "debug",
         },
         {
             label: "Discord",
@@ -33,7 +33,7 @@ export default function General() {
         {
             label: "React Native",
             version: debugInfo.react.nativeVersion,
-            icon: "mobile",
+            icon: "grid",
         },
         {
             label: "Bytecode",
@@ -61,17 +61,17 @@ export default function General() {
         {
             label: "Manufacturer",
             version: debugInfo.device.manufacturer,
-            icon: "ic_badge_staff"
+            icon: "submarine"
         },
         {
             label: "Brand",
             version: debugInfo.device.brand,
-            icon: "ic_settings_boost_24px"
+            icon: "img_nitro_server_avatar"
         },
         {
             label: "Model",
             version: debugInfo.device.model,
-            icon: "ic_phonelink_24px"
+            icon: "voice_bar_phone"
         },
         {
             label: RN.Platform.select({ android: "Codename", ios: "Machine ID" })!,
@@ -83,7 +83,7 @@ export default function General() {
     return (
         <ErrorBoundary>
             <RN.ScrollView style={{ flex: 1 }} contentContainerStyle={{ paddingBottom: 38 }}>
-                <FormSection title="Links" titleStyleType="no_border">
+                <FormSection title="Links" android_noDivider={true}>
                     <FormRow
                         label="Discord Server"
                         leading={<FormRow.Icon source={getAssetIDByName("Discord")} />}
@@ -108,13 +108,13 @@ export default function General() {
                     <FormRow
                         label={settings.safeMode?.enabled ? "Return to Normal Mode" : "Reload in Safe Mode"}
                         subLabel={`This will reload Discord ${settings.safeMode?.enabled ? "normally." : "without loading plugins."}`}
-                        leading={<FormRow.Icon source={getAssetIDByName("ic_privacy_24px")} />}
+                        leading={<FormRow.Icon source={getAssetIDByName("ic_auto_moderation_shield")} />}
                         onPress={toggleSafeMode}
                     />
                     <FormDivider />
                     <FormSwitchRow
                         label="Developer Settings"
-                        leading={<FormRow.Icon source={getAssetIDByName("ic_progress_wrench_24px")} />}
+                        leading={<FormRow.Icon source={getAssetIDByName("ic_robot_24px")} />}
                         value={settings.developerSettings}
                         onValueChange={(v: boolean) => {
                             settings.developerSettings = v;
@@ -131,7 +131,7 @@ export default function General() {
                         ))}
                     </Summary>
                     <FormDivider />
-                    <Summary label="Platform" icon="ic_mobile_device">
+                    <Summary label="Platform" icon="screenshare">
                         {platformInfo.map((p, i) => (
                             <>
                                 <Version label={p.label} version={p.version} icon={p.icon} />

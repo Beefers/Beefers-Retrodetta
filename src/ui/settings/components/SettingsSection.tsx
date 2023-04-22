@@ -1,6 +1,5 @@
 import { NavigationNative } from "@metro/common";
 import { useProxy } from "@lib/storage";
-import { getAssetIDByName } from "@ui/assets";
 import { ErrorBoundary, Forms } from "@ui/components";
 import settings from "@lib/settings";
 
@@ -12,37 +11,27 @@ export default function SettingsSection() {
 
     return (
         <ErrorBoundary>
+            {/* I commented out all of the icons here to match Discord's UI */}
             <FormSection key="Vendetta" title={`Vendetta${settings.safeMode?.enabled ? " (Safe Mode)" : ""}`}>
                 <FormRow
                     label="General"
-                    leading={<FormRow.Icon source={getAssetIDByName("settings")} />}
+                    // leading={<FormRow.Icon source={getAssetIDByName("settings")} />}
                     trailing={FormRow.Arrow}
                     onPress={() => navigation.push("VendettaSettings")}
                 />
                 <FormDivider />
                 <FormRow
                     label="Plugins"
-                    leading={<FormRow.Icon source={getAssetIDByName("debug")} />}
+                    // leading={<FormRow.Icon source={getAssetIDByName("debug")} />}
                     trailing={FormRow.Arrow}
                     onPress={() => navigation.push("VendettaPlugins")}
                 />
-                {window.__vendetta_loader?.features.themes && (
-                    <>
-                        <FormDivider />
-                        <FormRow
-                            label="Themes"
-                            leading={<FormRow.Icon source={getAssetIDByName("ic_theme_24px")} />}
-                            trailing={FormRow.Arrow}
-                            onPress={() => navigation.push("VendettaThemes")}
-                        />
-                    </>
-                )}
                 {settings.developerSettings && (
                     <>
                         <FormDivider />
                         <FormRow
                             label="Developer"
-                            leading={<FormRow.Icon source={getAssetIDByName("ic_progress_wrench_24px")} />}
+                            // leading={<FormRow.Icon source={getAssetIDByName("ic_robot_24px")} />}
                             trailing={FormRow.Arrow}
                             onPress={() => navigation.push("VendettaDeveloper")}
                         />
