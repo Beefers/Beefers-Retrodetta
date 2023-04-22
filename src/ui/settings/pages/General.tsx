@@ -16,7 +16,7 @@ export default function General() {
 
     const versions = [
         {
-            label: "Onetwosixetta",
+            label: "Retrodetta",
             version: debugInfo.vendetta.version,
             icon: "debug",
         },

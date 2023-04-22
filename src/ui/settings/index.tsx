@@ -23,7 +23,7 @@ export default function initSettings() {
         return {
             ...existingScreens,
             VendettaSettings: {
-                title: "Onetwosixetta",
+                title: "Retrodetta",
                 render: General,
             },
             VendettaPlugins: {
@@ -40,7 +40,7 @@ export default function initSettings() {
                 render: AssetBrowser,
             },
             VendettaCustomPage: {
-                title: "Onetwosixetta Page",
+                title: "Retrodetta Page",
                 render: ({ render: PageView, noErrorBoundary, ...options }: { render: React.ComponentType, noErrorBoundary: boolean } & Record<string, object>) => {
                     const navigation = NavigationNative.useNavigation();
                     React.useEffect(() => options && navigation.setOptions(without(options, "render", "noErrorBoundary")), []);

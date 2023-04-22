@@ -28,5 +28,5 @@ export default async () => {
     unloads.push(await initPlugins());
 
     // We good :)
-    logger.log("Onetwosixetta is ready!");
+    logger.log("Retrodetta is ready!");
 }
